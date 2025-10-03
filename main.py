@@ -8,29 +8,11 @@ from ulauncher.api.shared.action.RenderResultListAction import RenderResultListA
 from ulauncher.api.shared.action.RunScriptAction import RunScriptAction
 
 # Path to fdfind binary (adjust if installed elsewhere)
-FDFIND_BIN = '/usr/bin/fdfind'
-
-def find(search, path='~', extra=''):
-    import os
-    # Handle empty search
-    if not search:
-        return []
-
-    path = os.path.expanduser(path)
-    cmd = f'cd "{path}" && /usr/bin/fdfind -a {extra} "{search}"'
-    
-    # Debug log
-    with open('/tmp/quickfind_debug.log', 'a') as f:
-        f.write(f'Executing: {cmd}\n')
-    
+def find_locate(search, max_results=20):
+    cmd = f'locate "{search}"'
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
-    
-    with open('/tmp/quickfind_debug.log', 'a') as f:
-        f.write(f'STDOUT: {result.stdout}\nSTDERR: {result.stderr}\n\n')
-    
-    return [i for i in result.stdout.splitlines()]
-
-
+    paths = result.stdout.splitlines()
+    return paths[:max_results]
 
 def get_item(path, name=None, desc=''):
     return ExtensionResultItem(
