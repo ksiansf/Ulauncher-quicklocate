@@ -12,10 +12,14 @@ FDFIND_BIN = '/usr/bin/fdfind'
 
 def find(search, path='~', extra=''):
     import os
+    # Handle empty search
+    if not search:
+        return []
+
     path = os.path.expanduser(path)
     cmd = f'cd "{path}" && /usr/bin/fdfind -a {extra} "{search}"'
     
-    # Write the command to a temp log to debug
+    # Debug log
     with open('/tmp/quickfind_debug.log', 'a') as f:
         f.write(f'Executing: {cmd}\n')
     
@@ -25,6 +29,7 @@ def find(search, path='~', extra=''):
         f.write(f'STDOUT: {result.stdout}\nSTDERR: {result.stderr}\n\n')
     
     return [i for i in result.stdout.splitlines()]
+
 
 
 def get_item(path, name=None, desc=''):
@@ -43,6 +48,8 @@ class DemoExtension(Extension):
 class KeywordQueryEventListener(EventListener):
     def on_event(self, event, extension):
         data = event.get_argument()
+        if not data:
+            return RenderResultListAction([])  # show nothing if user typed only the keyword
         keyword = event.get_keyword()
 
         fd_keyword = extension.preferences.get('fd')
