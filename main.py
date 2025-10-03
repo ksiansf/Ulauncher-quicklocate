@@ -11,12 +11,21 @@ from ulauncher.api.shared.action.RunScriptAction import RunScriptAction
 FDFIND_BIN = '/usr/bin/fdfind'
 
 def find(search, path='~', extra=''):
-    # Expand ~ to full home directory
+    import os
     path = os.path.expanduser(path)
-    # Build command
-    cmd = f'cd "{path}" && {FDFIND_BIN} -a {extra} "{search}"'
+    cmd = f'cd "{path}" && /usr/bin/fdfind -a {extra} "{search}"'
+    
+    # Write the command to a temp log to debug
+    with open('/tmp/quickfind_debug.log', 'a') as f:
+        f.write(f'Executing: {cmd}\n')
+    
     result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+    
+    with open('/tmp/quickfind_debug.log', 'a') as f:
+        f.write(f'STDOUT: {result.stdout}\nSTDERR: {result.stderr}\n\n')
+    
     return [i for i in result.stdout.splitlines()]
+
 
 def get_item(path, name=None, desc=''):
     return ExtensionResultItem(
