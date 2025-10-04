@@ -3,7 +3,7 @@
   "name": "Quick Locate",
   "description": "Finds files/folders on you computer quickly",
   "developer_name": "Ksian",
-  "icon": "images/icon.png",
+  "icon": "images/s_icon.png",
   "options": {
     "query_debounce": 0.1
   },
