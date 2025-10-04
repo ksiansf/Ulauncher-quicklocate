@@ -1,8 +1,8 @@
-# 🔍 QuickFind for Ulauncher
+# 🔍 QuickLocate for Ulauncher
 
 **QuickFind** is a blazing fast Ulauncher extension that helps you **quickly find files, folders, and more** on your computer — all from your keyboard.
 
-> "Don't search. **QuickFind.**"
+> "Don't search. **QuickLocate.**"
 
 ---
 
@@ -31,10 +31,10 @@ There are no requirements when it comes to python packages.
 ### Requirements
 
 - [Ulauncher](https://ulauncher.io/)
-- [fd](https://github.com/sharkdp/fd)
+- [plocate](https://plocate.sesse.net/
 
 ### Steps
 
 1. Open Ulauncher.
 2. Go to **Settings > Extensions > Add extension**.
-3. Paste the URL of this github page: https://github.com/JerryV22/Ulauncher-quickfind
+3. Paste the URL of this github page: https://github.com/ksiansf/Ulauncher-quickfind-plocate
