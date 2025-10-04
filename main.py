@@ -19,7 +19,7 @@ def find_plocate(search, max_results=50):
         return []
 
     # Try to find plocate full path
-    plocate_path = "/usr/bin/plocate"
+    plocate_path = "/usr/local/bin/plocate"
     if not os.path.exists(plocate_path):
         # Try fallback to locate
         plocate_path = "/usr/bin/locate"
