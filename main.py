@@ -61,7 +61,7 @@ def get_item(path, label=None):
     """
     filename = os.path.basename(path) if not label else label
     return ExtensionResultItem(
-        icon="images/icon.png",
+        icon="images/s_icon.png",
         name=filename,
         description=path,
         on_enter=RunScriptAction(f'xdg-open "{path}"', [])
@@ -133,7 +133,7 @@ class QuickLocateEventListener(EventListener):
         if not found:
             # Add a placeholder item
             items.append(ExtensionResultItem(
-                icon="images/icon.png",
+                icon="images/s_icon.png",
                 name="No results found",
                 description=f"Query: {query}",
                 on_enter=None
