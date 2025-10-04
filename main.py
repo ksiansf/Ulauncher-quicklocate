@@ -1,6 +1,7 @@
 import subprocess
 import os
 import shlex
+import shutil
 from ulauncher.api.client.Extension import Extension
 from ulauncher.api.client.EventListener import EventListener
 from ulauncher.api.shared.event import KeywordQueryEvent
@@ -11,19 +12,22 @@ from ulauncher.api.shared.action.RunScriptAction import RunScriptAction
 
 def find_plocate(search, max_results=50):
     """
-    Search files using 'plocate' for fast indexed searching.
+    Search files using plocate or locate.
+    Automatically detects the executable and prints debug info.
     Returns a list of paths.
-    Includes debug output to ~/.cache/ulauncher.log.
     """
     if not search:
         return []
 
-    # Try to find plocate full path
-    plocate_path = "/usr/local/bin/plocate"
-    if not os.path.exists(plocate_path):
-        # Try fallback to locate
-        plocate_path = "/usr/bin/locate"
+    # Auto-detect plocate or locate
+    plocate_path = shutil.which("plocate") or shutil.which("locate")
+    if not plocate_path:
+        print("[QuickLocate ERROR] plocate/locate not found in PATH")
+        return []
 
+    print(f"[QuickLocate DEBUG] Using executable: {plocate_path}")
+
+    # Build and run command safely
     cmd = f'{plocate_path} {shlex.quote(search)}'
     print(f"[QuickLocate DEBUG] Running command: {cmd}")
 
@@ -34,7 +38,6 @@ def find_plocate(search, max_results=50):
             capture_output=True,
             text=True,
         )
-        print(f"[QuickLocate DEBUG] Raw plocate output:\n{result.stdout[:500]}")  # first 500 chars
         if result.stderr:
             print(f"[QuickLocate DEBUG] STDERR: {result.stderr.strip()}")
         if result.returncode != 0:
@@ -42,7 +45,7 @@ def find_plocate(search, max_results=50):
             return []
 
         paths = result.stdout.splitlines()
-        print(f"[QuickLocate DEBUG] Found {len(paths)} results")
+        print(f"[QuickLocate DEBUG] Raw output ({len(paths)} lines): {paths[:10]}")  # first 10 lines
         return paths[:max_results]
 
     except Exception as e:
@@ -85,6 +88,7 @@ class QuickLocateEventListener(EventListener):
                 found = find_plocate(query, max_results=cut_off)
             elif keyword == qdir_keyword:
                 print("[QuickLocate DEBUG] Performing directory search")
+                # Filter to directories only
                 found = [p for p in find_plocate(query, max_results=cut_off * 2) if os.path.isdir(p)]
                 found = found[:cut_off]
 
@@ -94,6 +98,7 @@ class QuickLocateEventListener(EventListener):
         items = []
         for path in found:
             items.append(get_item(path))
+            # Optionally show parent directory
             if show_dirs and not path.endswith('/'):
                 dir_path = os.path.dirname(path)
                 items.append(get_item(dir_path, name=f'↑Dir: {dir_path}', desc='Directory of the file above'))
