@@ -16,7 +16,6 @@ def find_plocate(search, max_results=50):
     if not search:
         return []
 
-    # Safely quote the search term
     cmd = f'plocate {shlex.quote(search)}'
 
     try:
@@ -53,18 +52,18 @@ class QuickLocateEventListener(EventListener):
         query = event.get_argument()
         keyword = event.get_keyword()
 
-        # Read preferences
-        fd_keyword = extension.preferences.get('fd')
-        fdir_keyword = extension.preferences.get('fdir')
+        # Read preferences with updated keywords
+        qf_keyword = extension.preferences.get('qf')
+        qdir_keyword = extension.preferences.get('qdir')
         cut_off = int(extension.preferences.get('cut', 10))
         show_dirs = extension.preferences.get('show_dirs', 'yes').lower() == 'yes'
 
         found = []
 
         if query:
-            if keyword == fd_keyword:
+            if keyword == qf_keyword:
                 found = find_plocate(query, max_results=cut_off)
-            elif keyword == fdir_keyword:
+            elif keyword == qdir_keyword:
                 found = [p for p in find_plocate(query, max_results=cut_off*2) if os.path.isdir(p)]
                 found = found[:cut_off]
 
