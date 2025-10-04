@@ -1,5 +1,6 @@
 import subprocess
 import os
+import re
 import shlex
 import shutil
 from ulauncher.api.client.Extension import Extension
@@ -64,22 +65,28 @@ def get_item(path, name=None, desc=''):
 
 def prioritize_results(paths, query):
     """
-    Return a list where:
-    - Paths containing the query as a full word come first
-    - Then paths containing the query anywhere
+    Prioritize search results:
+    1. Exact filename match
+    2. Whole-word match
+    3. Partial (character) match
     """
     query_lower = query.lower()
-    full_word = []
+    exact = []
+    word_match = []
     partial = []
 
     for p in paths:
         filename = os.path.basename(p).lower()
-        if filename == query_lower:  # exact match
-            full_word.append(p)
-        elif query_lower in filename:  # partial match
+
+        if filename == query_lower:
+            exact.append(p)
+        # Use regex to find query as a whole word (word boundaries)
+        elif re.search(rf'\b{re.escape(query_lower)}\b', filename):
+            word_match.append(p)
+        elif query_lower in filename:
             partial.append(p)
 
-    return full_word + partial
+    return exact + word_match + partial
 
 class QuickLocateExtension(Extension):
     def __init__(self):
