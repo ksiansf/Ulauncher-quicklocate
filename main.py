@@ -158,9 +158,9 @@ class QuickLocateEventListener(EventListener):
         else:
             for path in found:
                 if cut_off > 15:
-                    items.append(get_item(path, small=False))
-                else:
                     items.append(get_item(path, small=True))
+                else:
+                    items.append(get_item(path, small=False))
 
         return RenderResultListAction(items)
 
