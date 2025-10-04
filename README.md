@@ -18,10 +18,10 @@
 
 ## Preview
 
-![](images/examples/0.png)
-![](images/examples/1.png)
-![](images/examples/2.png)
-![](images/examples/3.png)
+![](images/examples/qf.png)
+![](images/examples/qv.png)
+![](images/examples/qa.png)
+![](images/examples/qp.png)
 
 ---
 
