@@ -8,7 +8,7 @@ from ulauncher.api.shared.event import KeywordQueryEvent
 from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
 from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
 from ulauncher.api.shared.action.RunScriptAction import RunScriptAction
-MIN_QUERY_LENGTH = 2  
+MIN_QUERY_LENGTH = 3  
 
 def find_plocate(search, max_results=50):
     """
