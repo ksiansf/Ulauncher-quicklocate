@@ -8,7 +8,7 @@ from ulauncher.api.shared.event import KeywordQueryEvent
 from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
 from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
 from ulauncher.api.shared.action.RunScriptAction import RunScriptAction
-
+MIN_QUERY_LENGTH = 2  
 
 def find_plocate(search, max_results=50):
     """
@@ -82,15 +82,17 @@ class QuickLocateEventListener(EventListener):
 
         found = []
 
-        if query:
+        
+        if query and len(query) >= MIN_QUERY_LENGTH:
             if keyword == qf_keyword:
                 print("[QuickLocate DEBUG] Performing file search")
                 found = find_plocate(query, max_results=cut_off)
             elif keyword == qdir_keyword:
                 print("[QuickLocate DEBUG] Performing directory search")
-                # Filter to directories only
                 found = [p for p in find_plocate(query, max_results=cut_off * 2) if os.path.isdir(p)]
                 found = found[:cut_off]
+        else:
+            print(f"[QuickLocate DEBUG] Query too short, ignoring: '{query}'")
 
         if not found:
             print("[QuickLocate DEBUG] No results found")
