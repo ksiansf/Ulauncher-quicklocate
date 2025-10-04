@@ -1,6 +1,6 @@
 {
   "required_api_version": "2",
-  "name": "QuickLocate",
+  "name": "Quick Locate",
   "description": "Finds files/folders on you computer quickly",
   "developer_name": "Ksian",
   "icon": "images/icon.png",
@@ -9,14 +9,14 @@
   },
   "preferences": [
     {
-      "id": "fd",
+      "id": "qf",
       "type": "keyword",
       "name": "Find files and folders",
       "description": "Finds files/folders on you computer quickly",
       "default_value": "fd"
     },
     {
-      "id": "fdir",
+      "id": "qdir",
       "type": "keyword",
       "name": "Find folders only",
       "description": "Finds only folders on you computer quickly",
