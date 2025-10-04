@@ -31,7 +31,7 @@ There are no requirements when it comes to python packages.
 ### Requirements
 
 - [Ulauncher](https://ulauncher.io/)
-- [plocate](https://plocate.sesse.net/
+- [plocate](https://plocate.sesse.net/)
 
 ### Steps
 
