@@ -62,6 +62,24 @@ def get_item(path, name=None, desc=''):
         on_enter=RunScriptAction(f'xdg-open "{path}"', [])
     )
 
+def prioritize_results(paths, query):
+    """
+    Return a list where:
+    - Paths containing the query as a full word come first
+    - Then paths containing the query anywhere
+    """
+    query_lower = query.lower()
+    full_word = []
+    partial = []
+
+    for p in paths:
+        filename = os.path.basename(p).lower()
+        if filename == query_lower:  # exact match
+            full_word.append(p)
+        elif query_lower in filename:  # partial match
+            partial.append(p)
+
+    return full_word + partial
 
 class QuickLocateExtension(Extension):
     def __init__(self):
@@ -86,10 +104,13 @@ class QuickLocateEventListener(EventListener):
         if query and len(query) >= MIN_QUERY_LENGTH:
             if keyword == qf_keyword:
                 print("[QuickLocate DEBUG] Performing file search")
-                found = find_plocate(query, max_results=cut_off)
+                found = find_plocate(query, max_results=cut_off*2)  # fetch extra for prioritization
+                found = prioritize_results(found, query)
+                found = found[:cut_off]  # limit final results
             elif keyword == qdir_keyword:
                 print("[QuickLocate DEBUG] Performing directory search")
-                found = [p for p in find_plocate(query, max_results=cut_off * 2) if os.path.isdir(p)]
+                found = [p for p in find_plocate(query, max_results=cut_off*4) if os.path.isdir(p)]
+                found = prioritize_results(found, query)
                 found = found[:cut_off]
         else:
             print(f"[QuickLocate DEBUG] Query too short, ignoring: '{query}'")
