@@ -11,7 +11,7 @@ import shlex
 def find_plocate(search, max_results=50):
     """
     Search files using 'plocate' for fast indexed searching.
-    Returns a list of paths.
+    Returns a list of  paths.
     """
     if not search:
         return []
