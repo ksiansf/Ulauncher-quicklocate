@@ -28,7 +28,7 @@ def find_plocate(search, max_results=50, use_regex=True, regex_pattern=None):
     if use_regex:
         if not regex_pattern:
             regex_pattern = rf'.*{re.escape(search)}.*'
-        cmd = f'{plocate_path} -r {shlex.quote(regex_pattern)}'
+        cmd = f'{plocate_path} -r -i {shlex.quote(regex_pattern)}'
     else:
         cmd = f'{plocate_path} {shlex.quote(search)}'
 
