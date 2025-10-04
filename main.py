@@ -54,10 +54,12 @@ def find_plocate(search, max_results=50):
         return []
 
 
-def get_item(path, name=None, desc=''):
-    """Build a Ulauncher result item"""
+def get_item(path):
+    filename = os.path.basename(path)       # filename only
     return ExtensionResultItem(
-        name=name if name else path,
+        icon=None,             # optional
+        name=filename,                       # show filename on top
+        description=path,                    # show full path below
         on_enter=RunScriptAction(f'xdg-open "{path}"', [])
     )
 
