@@ -7,6 +7,7 @@ from ulauncher.api.client.Extension import Extension
 from ulauncher.api.client.EventListener import EventListener
 from ulauncher.api.shared.event import KeywordQueryEvent
 from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
+from ulauncher.api.shared.item.ExtensionSmallResultItem import ExtensionSmallResultItem
 from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
 from ulauncher.api.shared.action.RunScriptAction import RunScriptAction
 
@@ -48,6 +49,15 @@ def find_plocate(search, max_results=50, use_regex=True, regex_pattern=None):
         return []
 
 def get_item(path, label=None):
+    """Build a Ulauncher item: filename on top, path below."""
+    filename = os.path.basename(path) if not label else label
+    return ExtensionSmallResultItem(
+        icon="images/xxxs_icon.png",
+        name=filename,
+        on_enter=RunScriptAction(f'xdg-open "{path}"', [])
+    )
+    
+def get__item(path, label=None):
     """Build a Ulauncher item: filename on top, path below."""
     filename = os.path.basename(path) if not label else label
     return ExtensionResultItem(
