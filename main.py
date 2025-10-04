@@ -54,12 +54,16 @@ def find_plocate(search, max_results=50):
         return []
 
 
-def get_item(path):
-    filename = os.path.basename(path)        # filename only
+def get_item(path, label=None):
+    """
+    Build a Ulauncher item.
+    label: optional display name for top line
+    """
+    filename = os.path.basename(path) if not label else label
     return ExtensionResultItem(
-        icon="images/icon_small.png",        # optional
-        name=filename,                       # show filename on top
-        description=path,                    # show full path below
+        icon="images/icon.png",
+        name=filename,
+        description=path,
         on_enter=RunScriptAction(f'xdg-open "{path}"', [])
     )
 
@@ -102,7 +106,7 @@ class QuickLocateEventListener(EventListener):
 
         qf_keyword = extension.preferences.get('qf')
         qdir_keyword = extension.preferences.get('qdir')
-        cut_off = int(extension.preferences.get('cut', 10))
+        cut_off = int(extension.preferences.get('cut', 30))
         show_dirs = extension.preferences.get('show_dirs', 'yes').lower() == 'yes'
 
         found = []
@@ -116,8 +120,8 @@ class QuickLocateEventListener(EventListener):
                 found = found[:cut_off]  # limit final results
             elif keyword == qdir_keyword:
                 print("[QuickLocate DEBUG] Performing directory search")
-                found = [p for p in find_plocate(query, max_results=cut_off*4) if os.path.isdir(p)]
-                found = prioritize_results(found, query)
+                raw_dirs = [p for p in find_plocate(query, max_results=cut_off*4) if os.path.isdir(p)]
+                found = prioritize_results(raw_dirs, query)
                 found = found[:cut_off]
         else:
             print(f"[QuickLocate DEBUG] Query too short, ignoring: '{query}'")
@@ -126,12 +130,21 @@ class QuickLocateEventListener(EventListener):
             print("[QuickLocate DEBUG] No results found")
 
         items = []
-        for path in found:
-            items.append(get_item(path))
-            # Optionally show parent directory
-            if show_dirs and not path.endswith('/'):
-                dir_path = os.path.dirname(path)
-                items.append(get_item(dir_path, name=f'↑Dir: {dir_path}', desc='Directory of the file above'))
+        if not found:
+            # Add a placeholder item
+            items.append(ExtensionResultItem(
+                icon="images/icon.png",
+                name="No results found",
+                description=f"Query: {query}",
+                on_enter=None
+            ))
+        else:
+            for path in found:
+                items.append(get_item(path))
+                # Optionally show parent directory
+                if show_dirs and not path.endswith('/'):
+                    dir_path = os.path.dirname(path)
+                    items.append(get_item(dir_path, label=f'↑Dir: {os.path.basename(dir_path)}'))
 
         return RenderResultListAction(items)
 
