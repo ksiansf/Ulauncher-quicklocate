@@ -53,6 +53,15 @@ def get_item(path, label=None):
     return ExtensionResultItem(
         icon="images/xxxs_icon.png",
         name=filename,
+        on_enter=RunScriptAction(f'xdg-open "{path}"', [])
+    )
+    
+def get__item(path, label=None):
+    """Build a Ulauncher item: filename on top, path below."""
+    filename = os.path.basename(path) if not label else label
+    return ExtensionResultItem(
+        icon="images/xxxs_icon.png",
+        name=filename,
         description=path,
         on_enter=RunScriptAction(f'xdg-open "{path}"', [])
     )
