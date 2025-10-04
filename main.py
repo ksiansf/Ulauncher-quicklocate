@@ -6,24 +6,31 @@ from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
 from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
 from ulauncher.api.shared.action.RunScriptAction import RunScriptAction
 import os
+import shlex
 
-def find_locate(search, max_results=50):
+def find_plocate(search, max_results=50):
     """
-    Search files using 'locate' for fast indexed searching.
+    Search files using 'plocate' for fast indexed searching.
     Returns a list of paths.
     """
     if not search:
         return []
 
-    # Execute locate command
-    cmd = f'locate "{search}"'
-    result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+    # Safely quote the search term
+    cmd = f'plocate {shlex.quote(search)}'
 
-    # Split results into lines
-    paths = result.stdout.splitlines()
-
-    # Return only the first max_results
-    return paths[:max_results]
+    try:
+        result = subprocess.run(
+            cmd,
+            shell=True,
+            capture_output=True,
+            text=True,
+            check=True
+        )
+        paths = result.stdout.splitlines()
+        return paths[:max_results]
+    except subprocess.CalledProcessError:
+        return []  # plocate failed or no results
 
 def get_item(path, name=None, desc=''):
     """
@@ -36,12 +43,12 @@ def get_item(path, name=None, desc=''):
         on_enter=RunScriptAction(f'xdg-open "{path}"', [])
     )
 
-class QuickFindExtension(Extension):
+class QuickLocateExtension(Extension):
     def __init__(self):
         super().__init__()
-        self.subscribe(KeywordQueryEvent, QuickFindEventListener())
+        self.subscribe(KeywordQueryEvent, QuickLocateEventListener())
 
-class QuickFindEventListener(EventListener):
+class QuickLocateEventListener(EventListener):
     def on_event(self, event, extension):
         query = event.get_argument()
         keyword = event.get_keyword()
@@ -54,13 +61,11 @@ class QuickFindEventListener(EventListener):
 
         found = []
 
-        # Only search if user typed something
         if query:
             if keyword == fd_keyword:
-                found = find_locate(query, max_results=cut_off)
+                found = find_plocate(query, max_results=cut_off)
             elif keyword == fdir_keyword:
-                # Filter results to directories only
-                found = [p for p in find_locate(query, max_results=cut_off*2) if os.path.isdir(p)]
+                found = [p for p in find_plocate(query, max_results=cut_off*2) if os.path.isdir(p)]
                 found = found[:cut_off]
 
         items = []
@@ -73,4 +78,4 @@ class QuickFindEventListener(EventListener):
         return RenderResultListAction(items)
 
 if __name__ == '__main__':
-    QuickFindExtension().run()
+    QuickLocateExtension().run()
