@@ -13,14 +13,14 @@
       "type": "keyword",
       "name": "Find files and folders",
       "description": "Finds files/folders on you computer quickly",
-      "default_value": "fd"
+      "default_value": "qf"
     },
     {
       "id": "qdir",
       "type": "keyword",
       "name": "Find folders only",
       "description": "Finds only folders on you computer quickly",
-      "default_value": "fdir"
+      "default_value": "qdir"
     },
     {
       "id": "dir",
