@@ -2,7 +2,13 @@
 
 **Quick Locate** is a blazing fast Ulauncher extension that helps you **quickly find files, folders, and more** on your computer — all from your keyboard.
 
-> "Don't search. **QuickLocate.**"
+It knows these keywords:
+1. qf for generic files
+2. qa for audio files
+3. qp for pictures
+4. qv for videos
+5. qdir for folders
+
 
 ---
 
