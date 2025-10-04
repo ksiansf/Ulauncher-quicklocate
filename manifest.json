@@ -16,6 +16,27 @@
       "default_value": "qf"
     },
     {
+      "id": "qv",
+      "type": "keyword",
+      "name": "Find videos",
+      "description": "Finds videos on you computer quickly",
+      "default_value": "qv"
+    },
+    {
+      "id": "qp",
+      "type": "keyword",
+      "name": "Find pictures",
+      "description": "Finds pictures on you computer quickly",
+      "default_value": "qp"
+    },
+    {
+      "id": "qa",
+      "type": "keyword",
+      "name": "Find audio files",
+      "description": "Finds audio files on you computer quickly",
+      "default_value": "qa"
+    },
+    {
       "id": "qdir",
       "type": "keyword",
       "name": "Find folders only",
