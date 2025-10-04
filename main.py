@@ -11,7 +11,7 @@ from ulauncher.api.shared.action.RenderResultListAction import RenderResultListA
 from ulauncher.api.shared.action.RunScriptAction import RunScriptAction
 MIN_QUERY_LENGTH = 3  
 
-def find_plocate(search, max_results=50):
+def find_plocate(search, max_results=300):
     """
     Search files using plocate or locate.
     Automatically detects the executable and prints debug info.
