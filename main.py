@@ -55,9 +55,9 @@ def find_plocate(search, max_results=50):
 
 
 def get_item(path):
-    filename = os.path.basename(path)       # filename only
+    filename = os.path.basename(path)        # filename only
     return ExtensionResultItem(
-        icon="icon_small.png",             # optional
+        icon="images/icon_small.png",        # optional
         name=filename,                       # show filename on top
         description=path,                    # show full path below
         on_enter=RunScriptAction(f'xdg-open "{path}"', [])
