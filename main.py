@@ -48,33 +48,22 @@ def find_plocate(search, max_results=50, use_regex=True, regex_pattern=None):
         print(f"[QuickLocate ERROR] Exception while running plocate: {e}")
         return []
 
-def get_item(path, label=None):
+def get_item(path, label=None, small=True):
     """Build a Ulauncher item: filename on top, path below."""
     filename = os.path.basename(path) if not label else label
-    return ExtensionSmallResultItem(
-        icon="images/xxxs_icon.png",
-        name=filename,
-        on_enter=RunScriptAction(f'xdg-open "{path}"', [])
-    )
-    
-def get__item(path, label=None):
-    """Build a Ulauncher item: filename on top, path below."""
-    filename = os.path.basename(path) if not label else label
-    return ExtensionResultItem(
-        icon="images/xxxs_icon.png",
-        name=filename,
-        on_enter=RunScriptAction(f'xdg-open "{path}"', [])
-    )
-    
-def get__item(path, label=None):
-    """Build a Ulauncher item: filename on top, path below."""
-    filename = os.path.basename(path) if not label else label
-    return ExtensionResultItem(
-        icon="images/xxxs_icon.png",
-        name=filename,
-        description=path,
-        on_enter=RunScriptAction(f'xdg-open "{path}"', [])
-    )
+    if small:
+        return ExtensionSmallResultItem(
+            icon="images/xxxs_icon.png",
+            name=filename,
+            on_enter=RunScriptAction(f'xdg-open "{path}"', [])
+        )
+    else:
+        return ExtensionResultItem(
+            icon="images/xxs_icon.png",
+            name=filename,
+            description=path,
+            on_enter=RunScriptAction(f'xdg-open "{path}"', [])
+        )
 
 def prioritize_results(paths, query):
     """Prioritize search results: exact, whole-word, then partial match."""
@@ -161,14 +150,17 @@ class QuickLocateEventListener(EventListener):
         items = []
         if not found:
             items.append(ExtensionResultItem(
-                icon="images/xxxs_icon.png",
+                icon="images/xxs_icon.png",
                 name="No results found",
                 description=f"Query: {query}",
                 on_enter=None
             ))
         else:
             for path in found:
-                items.append(get_item(path))
+                if cut_off > 15:
+                    items.append(get_item(path, small=False))
+                else:
+                    items.append(get_item(path, small=True))
 
         return RenderResultListAction(items)
 
