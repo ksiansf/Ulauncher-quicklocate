@@ -108,7 +108,7 @@ class QuickLocateEventListener(EventListener):
             # -------- Video search --------
             elif keyword == qvid_keyword:
                 print("[QuickLocate DEBUG] Performing video file search")
-                video_regex = rf'.*{re.escape(query)}.*\({ "|".join(ext[1:] for ext in VIDEO_EXTENSIONS) }\)'
+                video_regex = rf'.*{re.escape(query)}.*\({ "\|".join(ext[1:] for ext in VIDEO_EXTENSIONS) }\)'
                 raw_files = find_plocate(query, max_results=cut_off*4, use_regex=True, regex_pattern=video_regex)
                 found = prioritize_results(raw_files, query)
                 found = found[:cut_off]
@@ -116,7 +116,7 @@ class QuickLocateEventListener(EventListener):
             # -------- Picture search --------
             elif keyword == qp_keyword:
                 print("[QuickLocate DEBUG] Performing picture file search")
-                pic_regex   = rf'.*{re.escape(query)}.*\({ "|".join(ext[1:] for ext in PICTURE_EXTENSIONS) }\)'
+                pic_regex   = rf'.*{re.escape(query)}.*\({ "\|".join(ext[1:] for ext in PICTURE_EXTENSIONS) }\)'
                 raw_files = find_plocate(query, max_results=cut_off*4, use_regex=True, regex_pattern=pic_regex)
                 found = prioritize_results(raw_files, query)
                 found = found[:cut_off]
@@ -124,7 +124,7 @@ class QuickLocateEventListener(EventListener):
             # -------- Audio search --------
             elif keyword == qa_keyword:
                 print("[QuickLocate DEBUG] Performing audio file search")
-                audio_regex = rf'.*{re.escape(query)}.*\({ "|".join(ext[1:] for ext in AUDIO_EXTENSIONS) }\)'
+                audio_regex = rf'.*{re.escape(query)}.*\({ "\|".join(ext[1:] for ext in AUDIO_EXTENSIONS) }\)'
                 raw_files = find_plocate(query, max_results=cut_off*4, use_regex=True, regex_pattern=audio_regex)
                 found = prioritize_results(raw_files, query)
                 found = found[:cut_off]
