@@ -57,9 +57,7 @@ def find_plocate(search, max_results=50):
 def get_item(path, name=None, desc=''):
     """Build a Ulauncher result item"""
     return ExtensionResultItem(
-        icon='images/icon.png',
         name=name if name else path,
-        description=desc,
         on_enter=RunScriptAction(f'xdg-open "{path}"', [])
     )
 
