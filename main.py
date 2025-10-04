@@ -34,6 +34,7 @@ def find_plocate(search, max_results=50):
             capture_output=True,
             text=True,
         )
+        print(f"[QuickLocate DEBUG] Raw plocate output:\n{result.stdout[:500]}")  # first 500 chars
         if result.stderr:
             print(f"[QuickLocate DEBUG] STDERR: {result.stderr.strip()}")
         if result.returncode != 0:
