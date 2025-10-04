@@ -1,8 +1,8 @@
 {
   "required_api_version": "2",
-  "name": "QuickFind",
+  "name": "QuickLocate",
   "description": "Finds files/folders on you computer quickly",
-  "developer_name": "Jer",
+  "developer_name": "Ksian",
   "icon": "images/icon.png",
   "options": {
     "query_debounce": 0.1
