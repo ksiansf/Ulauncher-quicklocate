@@ -51,18 +51,18 @@
       "default_value": "~"
     },
     {
+      "id": "min_len",
+      "type": "text",
+      "name": "Minimum number of characters to search for",
+      "description": "This stops the search until the minimum number of characters are filled (provide an integer)",
+      "default_value": "3"
+    },
+    {
       "id": "cut",
       "type": "text",
       "name": "Number of results shown",
-      "description": "This dectates the number of results show (provide an intiger)",
+      "description": "This dectates the number of results show (provide an integer)",
       "default_value": "10"
-    },
-    {
-      "id": "show_dirs",
-      "type": "text",
-      "name": "Show dir bellow a file",
-      "description": "This dectates if the directory of a file is show bellow it (yes or no)",
-      "default_value": "yes"
     }
   ]
 }

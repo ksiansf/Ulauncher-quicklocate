@@ -10,8 +10,6 @@ from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
 from ulauncher.api.shared.action.RenderResultListAction import RenderResultListAction
 from ulauncher.api.shared.action.RunScriptAction import RunScriptAction
 
-MIN_QUERY_LENGTH = 3
-
 # File extension sets
 VIDEO_EXTENSIONS = {'.mp4', '.mkv', '.avi', '.mov', '.webm', '.flv', '.wmv'}
 PICTURE_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.bmp', '.tiff', '.webp'}
@@ -91,11 +89,11 @@ class QuickLocateEventListener(EventListener):
         qa_keyword = extension.preferences.get('qa')
         qdir_keyword = extension.preferences.get('qdir')
         cut_off = int(extension.preferences.get('cut', 30))
-        show_dirs = extension.preferences.get('show_dirs', 'yes').lower() == 'yes'
-
+        min_length = int(extension.preferences.get('min_len', 3))
+        
         found = []
 
-        if query and len(query) >= MIN_QUERY_LENGTH:
+        if query and len(query) >= min_length:
 
             # -------- File search --------
             if keyword == qf_keyword:
@@ -152,9 +150,6 @@ class QuickLocateEventListener(EventListener):
         else:
             for path in found:
                 items.append(get_item(path))
-                if show_dirs and not path.endswith('/'):
-                    dir_path = os.path.dirname(path)
-                    items.append(get_item(dir_path, label=f'↑Dir: {os.path.basename(dir_path)}'))
 
         return RenderResultListAction(items)
 

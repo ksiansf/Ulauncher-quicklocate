@@ -1,6 +1,6 @@
 # 🔍 QuickLocate for Ulauncher
 
-**QuickFind** is a blazing fast Ulauncher extension that helps you **quickly find files, folders, and more** on your computer — all from your keyboard.
+**Quick Locate** is a blazing fast Ulauncher extension that helps you **quickly find files, folders, and more** on your computer — all from your keyboard.
 
 > "Don't search. **QuickLocate.**"
 
@@ -8,11 +8,11 @@
 
 ## Features
 
-- Find files and folders instantly using fd
+- Find files and folders instantly using plocate
 - Supports custom search directories
 - Lightweight and fast
 - Smart fuzzy matching
-- Designed for Linux based on fd
+- Designed for Linux based on plocate
 
 ---
 
