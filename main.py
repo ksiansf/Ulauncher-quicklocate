@@ -98,7 +98,7 @@ class QuickLocateEventListener(EventListener):
         qdir_keyword = extension.preferences.get('qdir')
         cut_off = int(extension.preferences.get('cut', 30))
         min_length = int(extension.preferences.get('min_len', 3))
-        cut_off_factor = 5
+        cut_off_factor = 10
         found = []
 
         if query and len(query) >= min_length:
